@@ -163,6 +163,22 @@
             margin-bottom: 10px;
         }
 
+        .live-note {
+            margin-bottom: 14px;
+            color: var(--muted);
+            font-size: 0.96rem;
+        }
+
+        .live-note a {
+            color: inherit;
+            border-bottom: 1px solid rgba(13, 140, 97, 0.22);
+        }
+
+        .live-note strong {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
         .section-copy {
             max-width: 46rem;
             color: var(--muted);
@@ -349,6 +365,17 @@
                     <div>
                         <p class="meta">Personal project</p>
                         <h2>A multimodal browser agent I keep pushing toward practicality.</h2>
+                        <p class="live-note">
+                            <a
+                                href="https://github.com/softpudding/OpenBrowser"
+                                target="_blank"
+                                rel="noreferrer"
+                                id="openbrowser-stars"
+                                aria-live="polite"
+                            >
+                                OpenBrowser currently has <strong>loading...</strong> stars on GitHub.
+                            </a>
+                        </p>
                         <p class="section-copy">
                             <strong>OpenBrowser</strong> is my attempt to build the browser AI agent solution I think
                             the industry is still missing. Browsers are, in practice, one of the most complex systems
@@ -430,5 +457,91 @@
             </div>
         </div>
     </div>
+    <script>
+        (function () {
+            const repo = "softpudding/OpenBrowser";
+            const endpoint = "https://api.github.com/repos/" + repo;
+            const cacheKey = "openbrowser-stars-cache-v1";
+            const cacheTtlMs = 30 * 60 * 1000;
+            const target = document.getElementById("openbrowser-stars");
+
+            if (!target) {
+                return;
+            }
+
+            const valueEl = target.querySelector("strong");
+
+            function formatCount(value) {
+                return new Intl.NumberFormat("en", {
+                    notation: value >= 1000 ? "compact" : "standard",
+                    maximumFractionDigits: 1
+                }).format(value);
+            }
+
+            function render(count) {
+                valueEl.textContent = formatCount(count);
+            }
+
+            function readCache() {
+                try {
+                    const raw = localStorage.getItem(cacheKey);
+                    if (!raw) {
+                        return null;
+                    }
+
+                    const parsed = JSON.parse(raw);
+                    if (!parsed || typeof parsed.count !== "number" || typeof parsed.ts !== "number") {
+                        return null;
+                    }
+
+                    if (Date.now() - parsed.ts > cacheTtlMs) {
+                        return null;
+                    }
+
+                    return parsed.count;
+                } catch (error) {
+                    return null;
+                }
+            }
+
+            function writeCache(count) {
+                try {
+                    localStorage.setItem(cacheKey, JSON.stringify({
+                        count: count,
+                        ts: Date.now()
+                    }));
+                } catch (error) {
+                }
+            }
+
+            const cached = readCache();
+            if (cached !== null) {
+                render(cached);
+            }
+
+            fetch(endpoint, {
+                headers: {
+                    "Accept": "application/vnd.github+json"
+                }
+            })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("GitHub API request failed");
+                    }
+                    return response.json();
+                })
+                .then(function (data) {
+                    if (typeof data.stargazers_count === "number") {
+                        render(data.stargazers_count);
+                        writeCache(data.stargazers_count);
+                    }
+                })
+                .catch(function () {
+                    if (cached === null) {
+                        valueEl.textContent = "some";
+                    }
+                });
+        }());
+    </script>
 </body>
 </html>
