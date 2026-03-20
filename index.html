@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xiao Yang</title>
+    <meta
+        name="description"
+        content="Xiao Yang builds AI agents for real problems, with OpenBrowser and SQLens."
+    >
+    <style>
+        :root {
+            --bg: #fcfbf8;
+            --paper: #ffffff;
+            --ink: #171717;
+            --muted: #63615d;
+            --line: #e9e4db;
+            --accent: #0d8c61;
+            --soft: #f7f4ee;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+            line-height: 1.8;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page {
+            width: min(960px, calc(100% - 28px));
+            margin: 0 auto;
+            padding: 22px 0 48px;
+        }
+
+        .sheet {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .topbar,
+        .label,
+        .meta,
+        .fact-key {
+            font-family: "SFMono-Regular", "Menlo", "Monaco", "Consolas", monospace;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 13px 18px;
+            border-bottom: 1px solid var(--line);
+            background: #fffdf8;
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 104px;
+            gap: 22px;
+            padding: 42px 34px 30px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .label {
+            color: var(--accent);
+            font-size: 0.82rem;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        h1,
+        h2 {
+            letter-spacing: -0.04em;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: clamp(2.15rem, 5vw, 3.65rem);
+            line-height: 1.02;
+            max-width: 14ch;
+            margin-bottom: 16px;
+        }
+
+        .hero-copy {
+            max-width: 43rem;
+            color: var(--muted);
+            font-size: 1.08rem;
+        }
+
+        .hero-copy strong,
+        .section-copy strong,
+        .fact-value strong {
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        .hero-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .hero-links a {
+            color: var(--accent);
+            border-bottom: 1px solid rgba(13, 140, 97, 0.28);
+        }
+
+        .avatar {
+            width: 104px;
+            height: 104px;
+            object-fit: cover;
+            border-radius: 14px;
+            border: 1px solid var(--line);
+            justify-self: end;
+        }
+
+        .content {
+            padding: 0 34px 22px;
+        }
+
+        .section {
+            display: grid;
+            grid-template-columns: 150px minmax(0, 1fr);
+            gap: 24px;
+            padding: 28px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+            padding-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 1.9rem;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+
+        .meta {
+            color: var(--muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .section-copy {
+            max-width: 46rem;
+            color: var(--muted);
+            font-size: 1.04rem;
+        }
+
+        .section-copy + .section-copy {
+            margin-top: 14px;
+        }
+
+        .facts {
+            display: grid;
+            gap: 10px;
+            margin-top: 18px;
+            padding: 16px 18px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: var(--soft);
+        }
+
+        .fact {
+            display: grid;
+            grid-template-columns: 120px minmax(0, 1fr);
+            gap: 12px;
+        }
+
+        .demo {
+            margin-top: 18px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            overflow: hidden;
+            background: #f4f1ea;
+        }
+
+        .demo img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .demo-caption {
+            padding: 10px 14px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 0.92rem;
+            background: #fffdfa;
+        }
+
+        .fact-key {
+            color: var(--muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .fact-value {
+            color: var(--ink);
+        }
+
+        .background-list {
+            display: grid;
+            gap: 10px;
+            max-width: 36rem;
+        }
+
+        .background-item {
+            display: grid;
+            grid-template-columns: 120px minmax(0, 1fr);
+            gap: 14px;
+        }
+
+        .background-item .fact-key {
+            padding-top: 2px;
+        }
+
+        .closing {
+            padding: 18px 34px 24px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 760px) {
+            .hero,
+            .section,
+            .background-item,
+            .fact {
+                grid-template-columns: 1fr;
+            }
+
+            .avatar {
+                justify-self: start;
+                width: 88px;
+                height: 88px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                width: min(100% - 14px, 960px);
+                padding-top: 12px;
+                padding-bottom: 18px;
+            }
+
+            .hero,
+            .content,
+            .closing {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+
+            .topbar {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+            h1 {
+                font-size: 2.45rem;
+            }
+
+            h2 {
+                font-size: 1.55rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="sheet">
+            <div class="topbar">
+                <span>xiao yang</span>
+                <span>ai agents / real systems / careful engineering</span>
+            </div>
+
+            <header class="hero">
+                <div>
+                    <p class="label">Xiao Yang</p>
+                    <h1>Building useful AI agents for real software systems.</h1>
+                    <p class="hero-copy">
+                        I am a Senior Software Engineer at <strong>Alibaba Cloud</strong>. Lately I have been spending
+                        most of my time on AI agents that have to work under real constraints. I care about whether a
+                        system is useful, whether it is evaluated carefully, and whether it helps with an actual task
+                        instead of just looking impressive.
+                    </p>
+                    <div class="hero-links">
+                        <a href="https://github.com/softpudding" target="_blank" rel="noreferrer">GitHub</a>
+                        <a href="mailto:ruanbu.yx@alibaba-inc.com">Email</a>
+                    </div>
+                </div>
+                <img class="avatar" src="yangxiao.jpg" alt="Portrait of Xiao Yang" loading="lazy">
+            </header>
+
+            <main class="content">
+                <section class="section">
+                    <div class="label">Background</div>
+                    <div class="background-list">
+                        <div class="background-item">
+                            <div class="fact-key">Current</div>
+                            <div class="fact-value">Senior Software Engineer, Alibaba Cloud</div>
+                        </div>
+                        <div class="background-item">
+                            <div class="fact-key">Education</div>
+                            <div class="fact-value">M.Comp. in Computer Science, National University of Singapore</div>
+                        </div>
+                        <div class="background-item">
+                            <div class="fact-key">Before that</div>
+                            <div class="fact-value">B.Eng. in Software Engineering, Shanghai Jiao Tong University</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <div class="label">What I Care About</div>
+                    <div>
+                        <p class="section-copy">
+                            I like using <strong>AI agents to solve real problems</strong>. I am less interested in
+                            demo theater and more interested in systems that can be tested, compared, and improved.
+                            I want agent work to feel closer to engineering and science, and less like improvisation.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <div class="label">OpenBrowser</div>
+                    <div>
+                        <p class="meta">Personal project</p>
+                        <h2>A multimodal browser agent I keep pushing toward practicality.</h2>
+                        <p class="section-copy">
+                            <strong>OpenBrowser</strong> is my attempt to build the browser AI agent solution I think
+                            the industry is still missing. Browsers are, in practice, one of the most complex systems
+                            in software. Their implementations are complicated, their interfaces are dynamic, and
+                            actually getting things done inside them is harder than it looks from the outside.
+                        </p>
+                        <p class="section-copy">
+                            To me, the most native way to operate a browser is still the human way: perceive the page
+                            visually, then act through the interface with a mouse and keyboard. Current models are not
+                            yet good enough to operate directly from pixels without help, so there is still a lot of
+                            engineering work needed to support them. That is exactly the part I enjoy working on.
+                        </p>
+                        <p class="section-copy">
+                            Many popular industry approaches, including <strong>PinchTab</strong> and
+                            <strong>OpenClaw Browser Relay</strong>, rely heavily on DOM text. That works well in many
+                            scenarios, and I do not dismiss it: given the current state of multimodal models, DOM-heavy
+                            methods can often be faster or more accurate than what I am doing. But I do not think
+                            understanding DOM is the same thing as truly being able to operate a page. My long-term bet
+                            is that the best browser agent will be <strong>multimodal</strong>, or at least a strong
+                            <strong>hybrid</strong> system.
+                        </p>
+                        <p class="section-copy">
+                            A big part of the project is making those tradeoffs explicit. In the archived evaluation, I
+                            kept the same <strong>OpenClaw</strong> control setup and compared
+                            <strong>OpenClaw Browser Relay</strong> with <strong>OpenClaw using the OpenBrowser skill</strong>.
+                            I care about the whole picture: task success, execution time, price, and how much context
+                            headroom remains in the control layer.
+                        </p>
+                        <p class="section-copy">
+                            I built my own evaluation environment for this, including mocked websites with realistic
+                            interactions, distractions, and event tracking. I use OpenBrowser every day; when I hit a
+                            bad case, I turn it into an evaluation set and optimize against it. I am especially
+                            interested in making <strong>lower-cost models like Qwen</strong> do real work, because I
+                            think cost will matter more and more over time.
+                        </p>
+                        <div class="demo">
+                            <img src="openbrowser-demo.gif" alt="OpenBrowser demo showing AI-assisted browser automation" loading="lazy">
+                            <div class="demo-caption">A short OpenBrowser demo from the apartment hunting workflow.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <div class="label">SQLens</div>
+                    <div>
+                        <p class="meta">SIGMOD 2026 Industrial Track</p>
+                        <h2>A scientific approach to code-SQL visibility with AI agents.</h2>
+                        <p class="section-copy">
+                            <strong>SQLens</strong> captures an important thing I believe. I like vibe coding. I like
+                            AI agents. What I like even more is <strong>vibe coding organized by software engineering
+                            methods</strong>. To me, that is what SQLens is trying to do.
+                        </p>
+                        <p class="section-copy">
+                            The paper, <strong>SQLens: Continuous Code-to-SQL Visibility in the Wild</strong>, was
+                            accepted to the <strong>2026 SIGMOD Industrial Track</strong>. It is about using software
+                            engineering methods to organize what AI agents produce: extracting SQL knowledge from
+                            unstructured code, turning that into a bidirectional code-SQL index, and making the result
+                            usable in real engineering workflows. The details are in the paper, but the core idea is
+                            simple: agent output becomes much more valuable when it is structured, validated, and made
+                            durable.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <div class="label">Belief</div>
+                    <div>
+                        <p class="section-copy">
+                            I like useful systems more than flashy demos. I think evaluation matters. I think smaller,
+                            cheaper models deserve serious engineering. And I think AI agents become most interesting
+                            when they are grounded in real constraints and real work.
+                        </p>
+                    </div>
+                </section>
+            </main>
+
+            <div class="closing">
+                If this resonates, I would be happy to talk, collaborate, or build together.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

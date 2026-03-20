@@ -1,0 +1,113 @@
+\documentclass[11pt,a4paper]{article}
+
+% Page layout
+\usepackage[margin=0.6in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+% Remove page numbers
+\pagestyle{empty}
+
+% Section formatting
+\titleformat{\section}{\large\bfseries\uppercase}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{8pt}{4pt}
+
+% Compact lists
+\setlist[itemize]{leftmargin=*,topsep=1pt,itemsep=0pt}
+
+% Hyperlink styling
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\begin{document}
+
+% Header
+\begin{center}
+    {\LARGE\bfseries XIAO YANG}\\[2pt]
+    \textit{Building AI Agents for Alibaba Cloud and the community}\\[2pt]
+    +86 186 2110 5309 \textbullet{} ruanbu.yx@alibaba-inc.com \textbullet{} github.com/softpudding
+\end{center}
+
+\vspace{2pt}
+
+% Education
+\section{Education}
+\vspace{2pt}
+\noindent\textbf{National University of Singapore} \hfill 2021.8 -- 2023.2\\
+\quad M.Comp. in Computer Science
+
+\noindent\textbf{Shanghai Jiao Tong University} \hfill 2017.9 -- 2021.6\\
+\quad B.Eng. in Software Engineering
+
+\vspace{6pt}
+
+% Professional Experience
+\section{Professional Experience}
+\noindent\textbf{Alibaba Cloud} \hfill 2022.6 -- Present\\
+\quad \textit{Senior Software Engineer} (promoted 2024)
+
+\vspace{4pt}
+
+\noindent\textbf{DAS Agent Project} \textit{(Core Developer, 2025.1 -- Present)}
+\begin{itemize}
+    \item Designed multi-subagent architecture with progressive context disclosure for tool invocation
+    \item Built scalable framework supporting unlimited API/skill integration for database diagnosis
+    \item Designed agent self-evolution mechanism: reviewer agent periodically analyzes conversation logs to optimize tool invocation patterns
+\end{itemize}
+
+\vspace{4pt}
+\noindent\textbf{SARA Project} \textit{(Code Review Agent, 2025.1 -- Present)}
+\begin{itemize}
+    \item Built autonomous code review agent with lazy-import for issue reproduction in isolated environments
+    \item Developed SQLens for automatic code-SQL bidirectional indexing; integrated into review for SQL impact analysis
+\end{itemize}
+
+\vspace{4pt}
+
+\noindent\textbf{Column Encryption Project} \textit{(Core Developer, 2023.2 -- 2024.12)}
+\begin{itemize}
+    \item Designed and implemented column-level encryption for RDS MySQL, PolarDB, and PolarDB-X
+    \item Integrated AES-128/256-GCM and SM4-128-GCM encryption algorithms with kernel-level modifications
+    \item Achieved 93\%+ of plaintext performance; deployed to 200+ customers with KMS integration
+\end{itemize}
+
+\vspace{4pt}
+
+% Publications
+\section{Publications}
+\noindent\textbf{SQLens: Continuous Code-to-SQL Visibility in the Wild}\\
+Xiao Yang, Mo Sha, Yiran Li, Suyang Zhong, Sheng Wang, Fangyuan Zhou, Feifei Li\\
+\textit{SIGMOD 2026 Industrial Track} (First Author)
+\begin{itemize}
+    \item Designed closed-loop self-correction system combining static analysis with LLM-guided reasoning
+    \item Achieved high precision/recall in code-to-SQL mapping reconstruction
+    \item Deployed in Alibaba Group production; reduced SQL incident resolution time
+\end{itemize}
+
+\vspace{4pt}
+
+% Open Source
+\section{Open Source}
+\noindent\textbf{OpenBrowser} (github.com/softpudding/OpenBrowser) -- Creator
+\begin{itemize}
+    \item Visual AI assistant for browser automation powered by Qwen3.5-Plus (100+ stars)
+    \item Optimized for small models: Qwen3.5-Flash (35B) effectively drives browser automation
+    \item Chrome extension with $\sim$1/18 cost of Gemini 3 Pro; supports visual perception, CAPTCHA bypass
+\end{itemize}
+
+\vspace{4pt}
+
+% Technical Skills
+\section{Technical Skills}
+\begin{itemize}
+    \item \textbf{Languages:} Python, Java, TypeScript, Go, SQL
+    \item \textbf{Databases:} MySQL, PostgreSQL, PolarDB, PolarDB-X, Redis, MongoDB
+    \item \textbf{Security:} TEE, Column Encryption, KMS, AES-GCM, SM4
+    \item \textbf{AI/ML:} LLM, AI Agent, Subagent Architecture, Prompt Engineering, Qwen Models
+\end{itemize}
+
+\end{document}
